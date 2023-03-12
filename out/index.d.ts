@@ -1,7 +1,7 @@
-/// <reference types="node" />
+﻿/// <reference types="node" />
 import protobufjs from 'protobufjs';
 export declare const getMessageParts: (binary: string) => readonly [string, string];
-export declare const enum ProtobufWireTypes {
+export declare enum ProtobufWireTypes {
     Nested = -1,
     Uint32 = 0,
     Uint64 = 1,

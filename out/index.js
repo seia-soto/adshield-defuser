@@ -1,5 +1,14 @@
-import protobufjs from 'protobufjs';
+﻿import protobufjs from 'protobufjs';
 export const getMessageParts = (binary) => [binary.slice(0, 4), binary.slice(4)];
+export var ProtobufWireTypes;
+(function (ProtobufWireTypes) {
+    // The internal type will have negative integer as the value
+    ProtobufWireTypes[ProtobufWireTypes["Nested"] = -1] = "Nested";
+    ProtobufWireTypes[ProtobufWireTypes["Uint32"] = 0] = "Uint32";
+    ProtobufWireTypes[ProtobufWireTypes["Uint64"] = 1] = "Uint64";
+    ProtobufWireTypes[ProtobufWireTypes["Binary"] = 2] = "Binary";
+    ProtobufWireTypes[ProtobufWireTypes["Float"] = 5] = "Float";
+})(ProtobufWireTypes || (ProtobufWireTypes = {}));
 // https://github.com/konsumer/rawproto/blob/master/package.json
 export const getProtobufFields = (buffer) => {
     const reader = protobufjs.Reader.create(buffer);
@@ -13,16 +22,16 @@ export const getProtobufFields = (buffer) => {
         // eslint-disable-next-line no-bitwise
         const wireType = tag & 7;
         switch (wireType) {
-            case 0 /* ProtobufWireTypes.Uint32 */: // Int32, int64, uint32, bool, enum, etc
+            case ProtobufWireTypes.Uint32: // Int32, int64, uint32, bool, enum, etc
                 out.push({ id, wireType, value: reader.uint32() });
                 break;
-            case 1 /* ProtobufWireTypes.Uint64 */: // Fixed64, sfixed64, double
+            case ProtobufWireTypes.Uint64: // Fixed64, sfixed64, double
                 out.push({ id, wireType, value: reader.fixed64() });
                 break;
-            case 2 /* ProtobufWireTypes.Binary */: // String, bytes, sub-message
+            case ProtobufWireTypes.Binary: // String, bytes, sub-message
                 out.push({ id, wireType, value: Buffer.from(reader.bytes()) });
                 break;
-            case 5 /* ProtobufWireTypes.Float */: // Fixed32, sfixed32, float
+            case ProtobufWireTypes.Float: // Fixed32, sfixed32, float
                 out.push({ id, wireType, value: reader.float() });
                 break;
             default: reader.skipType(wireType);
@@ -72,14 +81,14 @@ export var KeyStoreDetailsFieldNames;
 export const getKeyStore = (keySource) => {
     const aFields = getProtobufFields(keySource);
     const aMap = getProtobufMap(KeyStoreFieldNames, aFields);
-    if (aMap?.details?.wireType !== 2 /* ProtobufWireTypes.Binary */) {
+    if (aMap?.details?.wireType !== ProtobufWireTypes.Binary) {
         throw new Error('DEFUSER_KEY_STORE_LEVEL_B_SOURCE_NOT_FOUND');
     }
     return {
         ...aMap,
         details: {
             id: 10,
-            wireType: -1 /* ProtobufWireTypes.Nested */,
+            wireType: ProtobufWireTypes.Nested,
             value: getProtobufMap(KeyStoreDetailsFieldNames, getProtobufFields(aMap.details.value)),
         },
     };
@@ -98,19 +107,19 @@ export const getDecodedBinaryWithKeyStore = (keyStore, binary) => {
     if (!reserved || !reservedInput || !reservedOutput || !input || !output) {
         throw new Error('DEFUSER_KEY_DETAILS_INSUFFICIENT');
     }
-    if (reserved.wireType !== 0 /* ProtobufWireTypes.Uint32 */) {
+    if (reserved.wireType !== ProtobufWireTypes.Uint32) {
         throw new Error('DEFUSER_UNEXPECTED_KEY_RESERVED_TYPE');
     }
-    if (reservedOutput.wireType !== 2 /* ProtobufWireTypes.Binary */) {
+    if (reservedOutput.wireType !== ProtobufWireTypes.Binary) {
         throw new Error('DEFUSER_UNEXPECTED_KEY_RESERVED_OUTPUT_TYPE');
     }
-    if (reservedInput.wireType !== 2 /* ProtobufWireTypes.Binary */) {
+    if (reservedInput.wireType !== ProtobufWireTypes.Binary) {
         throw new Error('DEFUSER_UNEXPECTED_KEY_RESERVED_INPUT_TYPE');
     }
-    if (input.wireType !== 2 /* ProtobufWireTypes.Binary */) {
+    if (input.wireType !== ProtobufWireTypes.Binary) {
         throw new Error('DEFUSER_UNEXPECTED_KEY_INPUT_TYPE');
     }
-    if (output.wireType !== 2 /* ProtobufWireTypes.Binary */) {
+    if (output.wireType !== ProtobufWireTypes.Binary) {
         throw new Error('DEFUSER_UNEXPECTED_KEY_OUTPUT_TYPE');
     }
     const inputStr = input.value.toString();
@@ -198,7 +207,7 @@ export var PayloadV1TextFieldNames;
 })(PayloadV1TextFieldNames || (PayloadV1TextFieldNames = {}));
 export const getDecodedPayloadsForV1 = (binary) => {
     const entries = getProtobufFields(binary);
-    const fixedId = entries.find(entry => entry.wireType === 2 /* ProtobufWireTypes.Binary */)?.id;
+    const fixedId = entries.find(entry => entry.wireType === ProtobufWireTypes.Binary)?.id;
     if (!fixedId) {
         throw new Error('DEFUSER_PAYLOAD_DETAILS_V1_DATA_EMPTY');
     }
@@ -207,23 +216,23 @@ export const getDecodedPayloadsForV1 = (binary) => {
         if (entry.id !== fixedId) {
             continue;
         }
-        if (entry.wireType !== 2 /* ProtobufWireTypes.Binary */) {
+        if (entry.wireType !== ProtobufWireTypes.Binary) {
             throw new Error('DEFUSER_PAYLOAD_DETAILS_V1_ENTRY_NOT_REPEATED');
         }
         const data = getProtobufMap(PayloadV1FieldNames, getProtobufFields(entry.value));
-        if (data.type?.wireType !== 0 /* ProtobufWireTypes.Uint32 */) {
+        if (data.type?.wireType !== ProtobufWireTypes.Uint32) {
             continue;
         }
         switch (data.type.value) {
             case PayloadV1Types.Text: {
-                if (data.text?.wireType !== 2 /* ProtobufWireTypes.Binary */) {
+                if (data.text?.wireType !== ProtobufWireTypes.Binary) {
                     throw new Error('DEFUSER_PAYLOAD_DETAILS_V1_TEXT_NOT_VALID');
                 }
                 const node = getProtobufMap(PayloadV1TextFieldNames, getProtobufFields(data.text.value));
-                if (node.id?.wireType !== 2 /* ProtobufWireTypes.Binary */) {
+                if (node.id?.wireType !== ProtobufWireTypes.Binary) {
                     throw new Error('DEFUSER_PAYLOAD_DETAILS_V1_TEXT_ID_NOT_VALID');
                 }
-                if (node.text?.wireType !== 2 /* ProtobufWireTypes.Binary */) {
+                if (node.text?.wireType !== ProtobufWireTypes.Binary) {
                     throw new Error('DEFUSER_PAYLOAD_DETAILS_V1_TEXT_CONTENT_NOT_VALID');
                 }
                 components.push({
@@ -242,13 +251,13 @@ export const getDecodedPayloadsForV1 = (binary) => {
 };
 export const getDecodedPayloads = (binary) => {
     const meta = getProtobufMap(PayloadFieldNames, getProtobufFields(binary));
-    if (meta.version?.wireType !== 0 /* ProtobufWireTypes.Uint32 */) {
+    if (meta.version?.wireType !== ProtobufWireTypes.Uint32) {
         throw new Error('DEFUSER_UNEXPECTED_PAYLOAD_VERSION');
     }
     switch (meta.version.value) {
         case 1:
             {
-                if (meta.details?.wireType !== 2 /* ProtobufWireTypes.Binary */) {
+                if (meta.details?.wireType !== ProtobufWireTypes.Binary) {
                     throw new Error('DEFUSER_UNEXPECTED_PAYLOAD_DETAILS_V1_TYPE');
                 }
                 return {

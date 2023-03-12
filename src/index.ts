@@ -2,7 +2,7 @@ import protobufjs from 'protobufjs';
 
 export const getMessageParts = (binary: string) => [binary.slice(0, 4), binary.slice(4)] as const;
 
-export const enum ProtobufWireTypes {
+export enum ProtobufWireTypes {
 	// The internal type will have negative integer as the value
 	Nested = -1,
 	Uint32 = 0,
