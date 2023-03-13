@@ -129,7 +129,7 @@ export const getDecodedBinaryWithKeyStore = (keyStore, binary) => {
     let isPreviousCharacterReserved = false;
     let out = '';
     for (const char of binary) {
-        if (char === String.fromCharCode(reserved.value)) {
+        if (!isPreviousCharacterReserved && char === String.fromCharCode(reserved.value)) {
             isPreviousCharacterReserved = true;
             continue;
         }
@@ -142,7 +142,7 @@ export const getDecodedBinaryWithKeyStore = (keyStore, binary) => {
             out += getDeterminedChar(reservedInputStr, reservedOutputStr, char);
             continue;
         }
-        out += getDeterminedChar(inputStr, outputStr, char);
+        out += getDeterminedChar(inputStr, outputStr, char) + char;
     }
     return out;
 };
