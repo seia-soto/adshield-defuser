@@ -1,6 +1,6 @@
 {
   "name": "adshield-defuser",
-  "version": "0.0.6",
+  "version": "0.0.7",
   "description": "AdShield Defuser is a library that decodes AdShield inlined payloads to restore components.",
   "main": "out/index.js",
   "type": "module",
