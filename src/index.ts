@@ -1,4 +1,4 @@
-import protobufjs from 'protobufjs';
+import protobufjs from 'protobufjs/minimal';
 
 export const getMessageParts = (binary: string) => [binary.slice(0, 4), binary.slice(4)] as const;
 
