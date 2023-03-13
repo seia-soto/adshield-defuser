@@ -21,5 +21,6 @@ module.exports = {
 	},
 	ignorePatterns: ['*.min.js'],
 	rules: {
+		'no-bitwise': 0,
 	},
 };
