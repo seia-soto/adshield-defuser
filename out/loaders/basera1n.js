@@ -1,5 +1,4 @@
-﻿import { escape } from 'querystring';
-export const decode = (init) => {
+﻿export const decode = (init) => {
     const a = Buffer.from(init, 'base64').toString('utf8');
     const payload = a.substring(2);
     let key = parseInt(a.slice(0, 2), 16);
