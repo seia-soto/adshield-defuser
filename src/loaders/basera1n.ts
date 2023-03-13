@@ -1,5 +1,3 @@
-import {escape} from 'querystring';
-
 export const decode = (init: string) => {
 	const a = Buffer.from(init, 'base64').toString('utf8');
 	const payload = a.substring(2);
