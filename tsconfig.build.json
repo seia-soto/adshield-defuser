@@ -1,0 +1,15 @@
+{
+  "extends": "./tsconfig.json",
+  "exclude": [
+    "out/**/*",
+    "test/**/*"
+  ],
+  "compilerOptions": {
+    "rootDir": "./src", /* Specify the root folder within your source files. */
+    "declaration": true, /* Generate .d.ts files from TypeScript and JavaScript files in your project. */
+    "declarationMap": true, /* Create sourcemaps for d.ts files. */
+    "sourceMap": true, /* Create source map files for emitted JavaScript files. */
+    "outDir": "./out", /* Specify an output folder for all emitted files. */
+    "emitBOM": true /* Emit a UTF-8 Byte Order Mark (BOM) in the beginning of output files. */
+  }
+}
