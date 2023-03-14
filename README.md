@@ -34,9 +34,7 @@ export declare const getDecoded: (binary: string, init: Init | string) => {
 
 ### Basera1n
 
-> **Warning**: Currently, we only support decoding on browser environment.
-
-We provide a simple function that is possible to decode script data into JSON compatible string.
+We provide a simple function that is possible to decode base64-encoded utf8 script data into JSON compatible string.
 
 ```ts
 export declare const decode: (init: string) => string;
