@@ -14,8 +14,6 @@ The major version of AdShield Defuser will change when there are breaking change
 
 ### Shortwave
 
-> **Warning**: Currently, we only support decoding text nodes.
-
 We provide a `getDecoded` function to extract all data from protobuf based script data.
 You can provide an `init` object as the AdShield script to extract both `keySources` and `dictionarySources` at runtime.
 
@@ -30,6 +28,15 @@ export declare const getDecoded: (binary: string, init: Init | string) => {
     meta: Partial<Record<"version" | "details", ProtobufField>>;
     details: PayloadV1Component[];
 };
+```
+
+We support decoding the following types:
+
+```typescript
+export enum PayloadV1Types {
+	Head = 0,
+	Text = 2,
+}
 ```
 
 ### Basera1n

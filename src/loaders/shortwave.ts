@@ -256,12 +256,18 @@ export type PayloadV1Component = {
 };
 
 export enum PayloadV1Types {
+	Head = 0,
 	Text = 2,
 }
 
 export enum PayloadV1FieldNames {
 	type = 1,
+	head = 10,
 	text = 12,
+}
+
+export enum PayloadV1HeadFieldNames {
+	code = 1,
 }
 
 export enum PayloadV1TextFieldNames {
@@ -288,13 +294,32 @@ export const getDecodedPayloadsForV1 = (binary: Buffer) => {
 			throw new Error('DEFUSER_PAYLOAD_DETAILS_V1_ENTRY_NOT_REPEATED');
 		}
 
-		const data = getProtobufMap(PayloadV1FieldNames, getProtobufFields(entry.value));
+		const fields = getProtobufFields(entry.value);
+		const data = getProtobufMap(PayloadV1FieldNames, fields);
 
 		if (data.type?.wireType !== ProtobufWireTypes.Uint32) {
 			continue;
 		}
 
 		switch (data.type.value) {
+			case PayloadV1Types.Head: {
+				if (data.head?.wireType !== ProtobufWireTypes.Binary) {
+					throw new Error('DEFUSER_PAYLOAD_DETAILS_V1_HEAD_NOT_VALID');
+				}
+
+				const node = getProtobufMap(PayloadV1HeadFieldNames, getProtobufFields(data.head.value));
+
+				if (node.code?.wireType !== ProtobufWireTypes.Binary) {
+					throw new Error('DEFUSER_PAYLOAD_DETAILS_V1_HEAD_CODE_NOT_VALID');
+				}
+
+				const code = node.code.value.toString();
+
+				document.head.insertAdjacentHTML('beforeend', code);
+
+				break;
+			}
+
 			case PayloadV1Types.Text: {
 				if (data.text?.wireType !== ProtobufWireTypes.Binary) {
 					throw new Error('DEFUSER_PAYLOAD_DETAILS_V1_TEXT_NOT_VALID');
@@ -320,6 +345,8 @@ export const getDecodedPayloadsForV1 = (binary: Buffer) => {
 			}
 
 			default: {
+				console.warn('DEFUSER_PAYLOAD_DETAILS_V1_UNKNOWN', fields);
+
 				break;
 			}
 		}

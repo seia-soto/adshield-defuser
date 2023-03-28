@@ -67,11 +67,16 @@ export type PayloadV1Component = {
     text: string;
 };
 export declare enum PayloadV1Types {
+    Head = 0,
     Text = 2
 }
 export declare enum PayloadV1FieldNames {
     type = 1,
+    head = 10,
     text = 12
+}
+export declare enum PayloadV1HeadFieldNames {
+    code = 1
 }
 export declare enum PayloadV1TextFieldNames {
     id = 1,

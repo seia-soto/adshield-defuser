@@ -191,13 +191,19 @@ export var PayloadFieldNames;
 })(PayloadFieldNames || (PayloadFieldNames = {}));
 export var PayloadV1Types;
 (function (PayloadV1Types) {
+    PayloadV1Types[PayloadV1Types["Head"] = 0] = "Head";
     PayloadV1Types[PayloadV1Types["Text"] = 2] = "Text";
 })(PayloadV1Types || (PayloadV1Types = {}));
 export var PayloadV1FieldNames;
 (function (PayloadV1FieldNames) {
     PayloadV1FieldNames[PayloadV1FieldNames["type"] = 1] = "type";
+    PayloadV1FieldNames[PayloadV1FieldNames["head"] = 10] = "head";
     PayloadV1FieldNames[PayloadV1FieldNames["text"] = 12] = "text";
 })(PayloadV1FieldNames || (PayloadV1FieldNames = {}));
+export var PayloadV1HeadFieldNames;
+(function (PayloadV1HeadFieldNames) {
+    PayloadV1HeadFieldNames[PayloadV1HeadFieldNames["code"] = 1] = "code";
+})(PayloadV1HeadFieldNames || (PayloadV1HeadFieldNames = {}));
 export var PayloadV1TextFieldNames;
 (function (PayloadV1TextFieldNames) {
     PayloadV1TextFieldNames[PayloadV1TextFieldNames["id"] = 1] = "id";
@@ -217,11 +223,24 @@ export const getDecodedPayloadsForV1 = (binary) => {
         if (entry.wireType !== ProtobufWireTypes.Binary) {
             throw new Error('DEFUSER_PAYLOAD_DETAILS_V1_ENTRY_NOT_REPEATED');
         }
-        const data = getProtobufMap(PayloadV1FieldNames, getProtobufFields(entry.value));
+        const fields = getProtobufFields(entry.value);
+        const data = getProtobufMap(PayloadV1FieldNames, fields);
         if (data.type?.wireType !== ProtobufWireTypes.Uint32) {
             continue;
         }
         switch (data.type.value) {
+            case PayloadV1Types.Head: {
+                if (data.head?.wireType !== ProtobufWireTypes.Binary) {
+                    throw new Error('DEFUSER_PAYLOAD_DETAILS_V1_HEAD_NOT_VALID');
+                }
+                const node = getProtobufMap(PayloadV1HeadFieldNames, getProtobufFields(data.head.value));
+                if (node.code?.wireType !== ProtobufWireTypes.Binary) {
+                    throw new Error('DEFUSER_PAYLOAD_DETAILS_V1_HEAD_CODE_NOT_VALID');
+                }
+                const code = node.code.value.toString();
+                document.head.insertAdjacentHTML('beforeend', code);
+                break;
+            }
             case PayloadV1Types.Text: {
                 if (data.text?.wireType !== ProtobufWireTypes.Binary) {
                     throw new Error('DEFUSER_PAYLOAD_DETAILS_V1_TEXT_NOT_VALID');
@@ -241,6 +260,7 @@ export const getDecodedPayloadsForV1 = (binary) => {
                 break;
             }
             default: {
+                console.warn('DEFUSER_PAYLOAD_DETAILS_V1_UNKNOWN', fields);
                 break;
             }
         }
