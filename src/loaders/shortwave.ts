@@ -253,6 +253,9 @@ export type PayloadV1Component = {
 	type: PayloadV1Types.Text;
 	id: string;
 	text: string;
+} | {
+	type: PayloadV1Types.Head;
+	code: string;
 };
 
 export enum PayloadV1Types {
@@ -315,7 +318,10 @@ export const getDecodedPayloadsForV1 = (binary: Buffer) => {
 
 				const code = node.code.value.toString();
 
-				document.head.insertAdjacentHTML('beforeend', code);
+				components.push({
+					type: data.type.value,
+					code,
+				});
 
 				break;
 			}
