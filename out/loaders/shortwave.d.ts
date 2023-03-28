@@ -65,6 +65,9 @@ export type PayloadV1Component = {
     type: PayloadV1Types.Text;
     id: string;
     text: string;
+} | {
+    type: PayloadV1Types.Head;
+    code: string;
 };
 export declare enum PayloadV1Types {
     Head = 0,

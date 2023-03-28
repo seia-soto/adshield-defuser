@@ -238,7 +238,10 @@ export const getDecodedPayloadsForV1 = (binary) => {
                     throw new Error('DEFUSER_PAYLOAD_DETAILS_V1_HEAD_CODE_NOT_VALID');
                 }
                 const code = node.code.value.toString();
-                document.head.insertAdjacentHTML('beforeend', code);
+                components.push({
+                    type: data.type.value,
+                    code,
+                });
                 break;
             }
             case PayloadV1Types.Text: {
