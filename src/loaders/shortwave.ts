@@ -65,7 +65,7 @@ export const getProtobufMap = <FieldMap extends Record<string, string | number>>
 };
 
 export const getKeySources = (script: string) => {
-	const pattern = /\w+:\[[\d,]+\]/gm;
+	const pattern = /['"]?[\w]+['"]?: ?\[[ \n\dxa-f,]+\]/gm;
 	const sources = script.match(pattern);
 
 	if (!sources) {
@@ -75,9 +75,30 @@ export const getKeySources = (script: string) => {
 	const stores: Record<string, Buffer> = {};
 
 	for (const source of sources) {
-		const [prefix, buffer] = source.split(':');
+		let [prefix, buffer] = source.split(':');
+		prefix = prefix.replace(/['"]/g, '');
 
-		stores[prefix] = Buffer.from(JSON.parse(buffer) as number[]);
+		// Prepare for other form of numbers
+		const seq = buffer.slice(1, -1).split(',').map(arbitary => {
+			const hexable = arbitary.trim();
+
+			// Get the divider
+			switch (hexable[1]) {
+				case 'b': {
+					return parseInt(hexable, 2);
+				}
+
+				case 'x': {
+					return parseInt(hexable, 16);
+				}
+
+				default: {
+					return parseInt(hexable, 10);
+				}
+			}
+		});
+
+		stores[prefix] = Buffer.from(seq);
 	}
 
 	return stores;
