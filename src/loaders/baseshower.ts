@@ -1,3 +1,20 @@
+export type Tag = {
+	tags: string;
+};
+
+export type Text = {
+	text_id: string;
+	text_value: string;
+};
+
+export type Payload = Tag | Text;
+
+// @ts-expect-error Known properties
+export const isTag = (payload: Payload): payload is Tag => typeof payload.tags === 'string';
+
+// @ts-expect-error Known properties
+export const isText = (payload: Payload): payload is Text => typeof payload.text_id === 'string' && typeof payload.text_value === 'string';
+
 export const decode = (binary: string) => {
 	binary = Buffer.from(binary, 'base64').toString('binary');
 

@@ -1,4 +1,8 @@
-﻿export const decode = (binary) => {
+﻿// @ts-expect-error Known properties
+export const isTag = (payload) => typeof payload.tags === 'string';
+// @ts-expect-error Known properties
+export const isText = (payload) => typeof payload.text_id === 'string' && typeof payload.text_value === 'string';
+export const decode = (binary) => {
     binary = Buffer.from(binary, 'base64').toString('binary');
     const key = binary.charCodeAt(0);
     const buffer = new Uint8Array(binary.length - 1);
