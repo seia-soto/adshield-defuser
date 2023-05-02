@@ -159,7 +159,7 @@ See next section: Cross-platform API support on Browser APIs for more informatio
 AdShield uses browser based APIs which behavior of the functions cannot be reproduced on other JavaScript runtimes.
 We implement the browser APIs in Node.JS standard functions to be cross-platform compatible and performant.
 
-Here's the list of browser function conversation in Node API:
+Here's the list of browser function conversion in Node API:
 
 **atob**
 
