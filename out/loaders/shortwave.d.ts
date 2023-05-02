@@ -1,32 +1,6 @@
 ﻿/// <reference types="node" />
-import protobufjs from 'protobufjs/minimal.js';
+import { ProtobufWireTypes } from '../utils/protobuf.js';
 export declare const getMessageParts: (binary: string) => readonly [string, string];
-export declare enum ProtobufWireTypes {
-    Nested = -1,
-    Uint32 = 0,
-    Uint64 = 1,
-    Binary = 2,
-    Float = 5
-}
-export type ProtobufField = {
-    id: number;
-    wireType: ProtobufWireTypes.Uint32;
-    value: number;
-} | {
-    id: number;
-    wireType: ProtobufWireTypes.Uint64;
-    value: protobufjs.Long;
-} | {
-    id: number;
-    wireType: ProtobufWireTypes.Binary;
-    value: Buffer;
-} | {
-    id: number;
-    wireType: ProtobufWireTypes.Float;
-    value: number;
-};
-export declare const getProtobufFields: (buffer: Buffer) => ProtobufField[];
-export declare const getProtobufMap: <FieldMap extends Record<string, string | number>>(names: FieldMap, fields: ProtobufField[]) => Partial<Record<keyof FieldMap, ProtobufField>>;
 export declare const getKeySources: (script: string) => Record<string, Buffer>;
 export declare enum KeyStoreFieldNames {
     id = 1,
@@ -44,10 +18,10 @@ export declare const getKeyStore: (keySource: Buffer) => {
     details: {
         id: number;
         wireType: ProtobufWireTypes;
-        value: Partial<Record<"input" | "output" | "reserved" | "reservedInput" | "reservedOutput", ProtobufField>>;
+        value: Partial<Record<"input" | "output" | "reserved" | "reservedInput" | "reservedOutput", import("../utils/protobuf.js").ProtobufField>>;
     };
-    id?: ProtobufField | undefined;
-    version?: ProtobufField | undefined;
+    id?: import("../utils/protobuf.js").ProtobufField | undefined;
+    version?: import("../utils/protobuf.js").ProtobufField | undefined;
 };
 export declare const getDeterminedChar: (a: string, b: string, c: string) => string;
 export declare const getDecodedBinaryWithKeyStore: (keyStore: ReturnType<typeof getKeyStore>, binary: string) => string;
@@ -87,15 +61,15 @@ export declare enum PayloadV1TextFieldNames {
 }
 export declare const getDecodedPayloadsForV1: (binary: Buffer) => PayloadV1Component[];
 export declare const getDecodedPayloads: (binary: Buffer) => {
-    meta: Partial<Record<"version" | "details", ProtobufField>>;
+    meta: Partial<Record<"version" | "details", import("../utils/protobuf.js").ProtobufField>>;
     details: PayloadV1Component[];
 };
 export type Init = {
     keySources: ReturnType<typeof getKeySources>;
     dictionarySources: ReturnType<typeof getDictionarySources>;
 };
-export declare const getDecoded: (binary: string, init: Init | string) => {
-    meta: Partial<Record<"version" | "details", ProtobufField>>;
+export declare const decode: (binary: string, init: Init | string) => {
+    meta: Partial<Record<"version" | "details", import("../utils/protobuf.js").ProtobufField>>;
     details: PayloadV1Component[];
 };
 //# sourceMappingURL=shortwave.d.ts.map

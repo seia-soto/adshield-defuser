@@ -9,8 +9,18 @@ The major version of AdShield Defuser will change when there are breaking change
 - **v0** Mar 13, 2023
   - **basera1n**
   - **shortwave**
+- **v0.0.10** May 2, 2023
+  - **baseshower**
 
 ## v0
+
+### Basera1n
+
+We provide a simple function that is possible to decode base64-encoded utf8 script data into JSON compatible string.
+
+```ts
+export declare const decode: (init: string) => string;
+```
 
 ### Shortwave
 
@@ -39,10 +49,12 @@ export enum PayloadV1Types {
 }
 ```
 
-### Basera1n
+### Baseshower
 
-We provide a simple function that is possible to decode base64-encoded utf8 script data into JSON compatible string.
+Another variant of basera1n.
 
 ```ts
-export declare const decode: (init: string) => string;
+export declare const decode: (binary: string) => {
+    tags: string;
+}[];
 ```

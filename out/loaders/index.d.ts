@@ -1,4 +1,5 @@
 ﻿import * as basera1n from './basera1n.js';
 import * as shortwave from './shortwave.js';
-export { basera1n, shortwave, };
+import * as baseshower from './baseshower.js';
+export { basera1n, shortwave, baseshower, };
 //# sourceMappingURL=index.d.ts.map
