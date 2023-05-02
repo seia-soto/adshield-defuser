@@ -152,7 +152,7 @@ Some notes for developers.
 You should install `Buffer` ponyfill or polyfill for your runtime if required.
 We use `npm:buffer` in our implementation, but never included in the box.
 
-See next section: Cross-platform API support on Browser APIs for more information more for information.
+See next section: Cross-platform API support on Browser APIs for more information.
 
 ### Cross-platform API support on Browser APIs
 
