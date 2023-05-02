@@ -1,9 +1,12 @@
 ﻿export const decode = (binary) => {
-    const buffer = Buffer.from(binary, 'base64');
-    let text = '';
-    for (const partial of buffer) {
-        text += String.fromCharCode(partial ^ buffer[0]);
+    binary = Buffer.from(binary, 'base64').toString('binary');
+    const key = binary.charCodeAt(0);
+    const buffer = new Uint8Array(binary.length - 1);
+    for (let i = 1; i < binary.length; i++) {
+        buffer[i - 1] = binary.charCodeAt(i) ^ key;
     }
-    return JSON.parse(text.slice(1));
+    const decoder = new TextDecoder();
+    const out = decoder.decode(buffer);
+    return JSON.parse(decodeURIComponent(out));
 };
 //# sourceMappingURL=baseshower.js.map

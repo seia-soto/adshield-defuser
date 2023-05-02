@@ -1,10 +1,15 @@
 export const decode = (binary: string) => {
-	const buffer = Buffer.from(binary, 'base64');
-	let text = '';
+	binary = Buffer.from(binary, 'base64').toString('binary');
 
-	for (const partial of buffer) {
-		text += String.fromCharCode(partial ^ buffer[0]);
+	const key = binary.charCodeAt(0);
+	const buffer = new Uint8Array(binary.length - 1);
+
+	for (let i = 1; i < binary.length; i++) {
+		buffer[i - 1] = binary.charCodeAt(i) ^ key;
 	}
 
-	return JSON.parse(text.slice(1)) as Array<{tags: string}>;
+	const decoder = new TextDecoder();
+	const out = decoder.decode(buffer);
+
+	return JSON.parse(decodeURIComponent(out)) as Array<{tags: string} | {text_id: string; text_value: string}>;
 };

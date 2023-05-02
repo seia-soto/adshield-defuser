@@ -54,7 +54,10 @@ export enum PayloadV1Types {
 Another variant of basera1n.
 
 ```ts
-export declare const decode: (binary: string) => {
+export declare const decode: (binary: string) => ({
     tags: string;
-}[];
+} | {
+    text_id: string;
+    text_value: string;
+})[];
 ```
