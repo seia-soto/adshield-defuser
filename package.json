@@ -33,6 +33,6 @@
   },
   "dependencies": {
     "buffertly": "^1.2.0",
-    "protobufjs": "^7.2.3"
+    "protobufjs": "^7.2.4"
   }
 }
