@@ -145,7 +145,7 @@ export declare const decode: (binary: string) => ({
 })[];
 ```
 
-### Zintywave
+### Ztinywave
 
 ```typescript
 export type Data = Array<{
