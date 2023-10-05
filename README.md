@@ -14,6 +14,8 @@ The major version of AdShield Defuser will change when there are breaking change
   - **shortwave**
 - **v0.0.10** May 2, 2023
   - **baseshower**
+- **v0.0.12** May 28, 2023
+  - **zintywave**
 
 ## v0
 
@@ -141,6 +143,26 @@ export declare const decode: (binary: string) => ({
     text_id: string;
     text_value: string;
 })[];
+```
+
+### Zintywave
+
+```typescript
+export type Data = Array<{
+    tags: string;
+}>;
+export type KeyEntry = {
+    id: string;
+    input: string;
+    output: string;
+    reserved1: number;
+    reserved1Input: string;
+    reserved1Output: string;
+    reserved2: number;
+    reserved2Input: string;
+    reserved2Output: string;
+};
+export declare const decode: (payload: string, keyStore: KeyEntry[]) => Data;
 ```
 
 ## Trivialities

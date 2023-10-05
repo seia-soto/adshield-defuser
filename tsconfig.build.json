@@ -10,6 +10,7 @@
     "declarationMap": true, /* Create sourcemaps for d.ts files. */
     "sourceMap": true, /* Create source map files for emitted JavaScript files. */
     "outDir": "./out", /* Specify an output folder for all emitted files. */
-    "emitBOM": true /* Emit a UTF-8 Byte Order Mark (BOM) in the beginning of output files. */
+    "emitBOM": true, /* Emit a UTF-8 Byte Order Mark (BOM) in the beginning of output files. */
+    "resolveJsonModule": true, /* Enable importing .json files. */
   }
 }
