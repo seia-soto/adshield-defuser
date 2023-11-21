@@ -12,5 +12,9 @@ export type KeyEntry = {
     reserved2Input: string;
     reserved2Output: string;
 };
+/**
+ * The code below is highly un-optimized.
+ */
+export declare const getKeys__Node__: (source: string) => Promise<KeyEntry[]>;
 export declare const decode: (payload: string, keyStore: KeyEntry[]) => Data;
 //# sourceMappingURL=ztinywave.d.ts.map
