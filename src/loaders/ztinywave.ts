@@ -115,6 +115,9 @@ _${secret}=${secret}('${marker.id}', ${marker.id})` + scriptable.slice(marker.en
 
 		return data
 	})()`);
+
+	await browser.close();
+
 	const keys: KeyEntry[] = [];
 
 	for (const raw of raws) {
