@@ -80,6 +80,7 @@ _${secret}=${secret}('${marker.id}', ${marker.id})` + scriptable.slice(marker.en
 
 		return data
 	})()`);
+    await browser.close();
     const keys = [];
     for (const raw of raws) {
         keys.push(...JSON.parse(raw));
